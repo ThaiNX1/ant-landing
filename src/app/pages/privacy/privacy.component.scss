@@ -108,6 +108,7 @@
     line-height: 1.8;
     color: #555;
     text-align: justify;
+    white-space: pre-line;
 
     @media (max-width: 768px) {
         font-size: 15px;
