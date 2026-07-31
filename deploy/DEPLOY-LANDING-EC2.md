@@ -171,7 +171,7 @@ upstream ant_landing {
 
 server {
     listen 80;
-    server_name www.antjsc.vn;
+    server_name antjsc.vn antjsc.vn;
 
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -205,13 +205,13 @@ sudo systemctl reload nginx
 
 ### 7.3. Cài SSL (Let's Encrypt)
 
-> Điều kiện: DNS đã trỏ `www.antjsc.vn` → Elastic IP.
+> Điều kiện: DNS đã trỏ `antjsc.vn` và `antjsc.vn` → Elastic IP.
 
 ```bash
 sudo dnf install -y certbot python3-certbot-nginx
 
 # Lấy certificate + tự cấu hình SSL
-sudo certbot --nginx -d www.antjsc.vn
+sudo certbot --nginx -d antjsc.vn -d antjsc.vn
 
 # Verify auto-renew
 sudo certbot renew --dry-run
@@ -221,7 +221,8 @@ sudo certbot renew --dry-run
 
 ## Bước 8: DNS
 
-Trỏ **A record** `www.antjsc.vn` → Elastic IP của EC2.
+Trỏ **A record** `antjsc.vn` → Elastic IP của EC2.
+Trỏ **A/CNAME record** `antjsc.vn` → Elastic IP hoặc `antjsc.vn`.
 
 ---
 
@@ -323,7 +324,7 @@ curl -s http://localhost:4201/health
 | Service | Container Port | Host Port | Domain |
 |---------|---------------|-----------|--------|
 | ANT CMS | 80 | 4200 | cms-ant.htezlife.com |
-| ANT Landing | 80 | **4201** | www.antjsc.vn |
+| ANT Landing | 80 | **4201** | antjsc.vn, antjsc.vn |
 
 > Nếu cả 2 service chạy trên cùng 1 EC2, mỗi service map sang port khác nhau trên host.
 
@@ -346,7 +347,7 @@ sudo tail -f /var/log/nginx/error.log
 ### Health check
 
 ```bash
-curl -s https://www.antjsc.vn/health
+curl -s https://antjsc.vn/health
 ```
 
 ### Resource monitoring
@@ -383,16 +384,18 @@ sudo journalctl --vacuum-time=7d
 
 ## Troubleshooting
 
-### Không truy cập được www.antjsc.vn
+### Không truy cập được antjsc.vn / antjsc.vn
 
 **Bước 1: Kiểm tra DNS**
 
 ```bash
 # Trên máy local
-nslookup www.antjsc.vn
+nslookup antjsc.vn
+nslookup antjsc.vn
 
 # Hoặc
-dig www.antjsc.vn
+dig antjsc.vn
+dig antjsc.vn
 
 # Kết quả phải trả về Elastic IP của EC2
 ```
@@ -463,7 +466,8 @@ curl -v http://localhost:80
 curl -v http://<ELASTIC-IP>
 
 # 4. Test domain
-curl -v http://www.antjsc.vn
+curl -v http://antjsc.vn
+curl -v http://antjsc.vn
 ```
 
 **Bước 7: Kiểm tra Nginx logs**
@@ -514,10 +518,12 @@ curl http://localhost:4201/health
 sudo certbot certificates
 
 # Test HTTPS
-curl -v https://www.antjsc.vn
+curl -v https://antjsc.vn
+curl -v https://antjsc.vn
 
 # Nếu SSL chưa setup, phải access qua HTTP trước
-curl -v http://www.antjsc.vn
+curl -v http://antjsc.vn
+curl -v http://antjsc.vn
 ```
 
 ### Lỗi 502 Bad Gateway
@@ -611,6 +617,6 @@ docker build -t ant-landing-test .
 5. ✅ Tạo ECR repository `ant-landing-prod`
 6. ✅ Tạo deploy script trên EC2 (port **4201**)
 7. ✅ Cài Nginx + SSL (Certbot)
-8. ✅ Trỏ DNS `www.antjsc.vn`
+8. ✅ Trỏ DNS `antjsc.vn` và `antjsc.vn`
 9. ✅ Setup GitHub Actions CI/CD
 10. ✅ Deploy lần đầu + verify
