@@ -171,7 +171,7 @@ upstream ant_landing {
 
 server {
     listen 80;
-    server_name ant.htezlife.com;
+    server_name www.antjsc.vn;
 
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -205,13 +205,13 @@ sudo systemctl reload nginx
 
 ### 7.3. Cài SSL (Let's Encrypt)
 
-> Điều kiện: DNS đã trỏ `ant.htezlife.com` → Elastic IP.
+> Điều kiện: DNS đã trỏ `www.antjsc.vn` → Elastic IP.
 
 ```bash
 sudo dnf install -y certbot python3-certbot-nginx
 
 # Lấy certificate + tự cấu hình SSL
-sudo certbot --nginx -d ant.htezlife.com
+sudo certbot --nginx -d www.antjsc.vn
 
 # Verify auto-renew
 sudo certbot renew --dry-run
@@ -221,7 +221,7 @@ sudo certbot renew --dry-run
 
 ## Bước 8: DNS
 
-Trỏ **A record** `ant.htezlife.com` → Elastic IP của EC2.
+Trỏ **A record** `www.antjsc.vn` → Elastic IP của EC2.
 
 ---
 
@@ -323,7 +323,7 @@ curl -s http://localhost:4201/health
 | Service | Container Port | Host Port | Domain |
 |---------|---------------|-----------|--------|
 | ANT CMS | 80 | 4200 | cms-ant.htezlife.com |
-| ANT Landing | 80 | **4201** | ant.htezlife.com |
+| ANT Landing | 80 | **4201** | www.antjsc.vn |
 
 > Nếu cả 2 service chạy trên cùng 1 EC2, mỗi service map sang port khác nhau trên host.
 
@@ -346,7 +346,7 @@ sudo tail -f /var/log/nginx/error.log
 ### Health check
 
 ```bash
-curl -s https://ant.htezlife.com/health
+curl -s https://www.antjsc.vn/health
 ```
 
 ### Resource monitoring
@@ -383,6 +383,176 @@ sudo journalctl --vacuum-time=7d
 
 ## Troubleshooting
 
+### Không truy cập được www.antjsc.vn
+
+**Bước 1: Kiểm tra DNS**
+
+```bash
+# Trên máy local
+nslookup www.antjsc.vn
+
+# Hoặc
+dig www.antjsc.vn
+
+# Kết quả phải trả về Elastic IP của EC2
+```
+
+**Bước 2: Kiểm tra Security Group**
+
+Đảm bảo EC2 Security Group đã mở:
+- Port 80 (HTTP) từ 0.0.0.0/0
+- Port 443 (HTTPS) từ 0.0.0.0/0
+
+```bash
+# Check từ AWS Console
+EC2 → Instances → chọn instance → Security tab → Inbound rules
+```
+
+**Bước 3: Kiểm tra Nginx đang chạy**
+
+```bash
+# SSH vào EC2
+ssh ec2-user@<ELASTIC-IP>
+
+# Kiểm tra Nginx status
+sudo systemctl status nginx
+
+# Nếu không chạy
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
+
+**Bước 4: Kiểm tra config Nginx**
+
+```bash
+# Xem config
+sudo cat /etc/nginx/conf.d/ant-landing.conf
+
+# Test syntax
+sudo nginx -t
+
+# Nếu có lỗi, reload
+sudo systemctl reload nginx
+```
+
+**Bước 5: Kiểm tra Docker container**
+
+```bash
+# Xem container có chạy không
+docker ps | grep ant-landing
+
+# Nếu không thấy, xem logs
+docker ps -a | grep ant-landing
+docker logs ant-landing
+
+# Test container port
+curl -I http://localhost:4201
+curl -I http://localhost:4201/health
+```
+
+**Bước 6: Test từng layer**
+
+```bash
+# 1. Test Docker container (port 4201)
+curl -v http://localhost:4201
+
+# 2. Test Nginx reverse proxy (port 80)
+curl -v http://localhost:80
+
+# 3. Test từ bên ngoài (thay <ELASTIC-IP>)
+curl -v http://<ELASTIC-IP>
+
+# 4. Test domain
+curl -v http://www.antjsc.vn
+```
+
+**Bước 7: Kiểm tra Nginx logs**
+
+```bash
+# Access logs
+sudo tail -100 /var/log/nginx/access.log
+
+# Error logs
+sudo tail -100 /var/log/nginx/error.log
+
+# Nginx main error log
+sudo cat /var/log/nginx/error.log
+```
+
+**Bước 8: Kiểm tra firewall**
+
+```bash
+# Amazon Linux 2023 thường không có firewalld
+# Nhưng check cho chắc
+sudo systemctl status firewalld
+
+# Nếu đang chạy và block
+sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=443/tcp --permanent
+sudo firewall-cmd --reload
+```
+
+**Bước 9: Restart toàn bộ**
+
+```bash
+# Restart Docker container
+docker restart ant-landing
+
+# Restart Nginx
+sudo systemctl restart nginx
+
+# Verify
+docker ps
+sudo systemctl status nginx
+curl http://localhost:4201/health
+```
+
+**Bước 10: Check SSL (nếu dùng HTTPS)**
+
+```bash
+# Xem certificate
+sudo certbot certificates
+
+# Test HTTPS
+curl -v https://www.antjsc.vn
+
+# Nếu SSL chưa setup, phải access qua HTTP trước
+curl -v http://www.antjsc.vn
+```
+
+### Lỗi 502 Bad Gateway
+
+```bash
+# Nginx không connect được tới Docker container
+# Check container có chạy không
+docker ps | grep ant-landing
+
+# Check port mapping
+docker port ant-landing
+
+# Phải thấy: 80/tcp -> 0.0.0.0:4201
+
+# Test upstream
+curl http://127.0.0.1:4201
+```
+
+### Lỗi 504 Gateway Timeout
+
+```bash
+# Container chạy quá chậm
+# Tăng timeout trong Nginx config
+sudo tee -a /etc/nginx/conf.d/ant-landing.conf << 'EOF'
+
+# Thêm vào location /
+    proxy_connect_timeout 60s;
+    proxy_send_timeout 60s;
+    proxy_read_timeout 60s;
+EOF
+
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
 ### Docker không pull được từ ECR
 
 ```bash
@@ -405,6 +575,9 @@ docker exec ant-landing ls /usr/share/nginx/html/
 
 # Kiểm tra nginx config trong container
 docker exec ant-landing cat /etc/nginx/nginx.conf
+
+# Xem có file index.html không
+docker exec ant-landing ls -la /usr/share/nginx/html/
 ```
 
 ### SSL certificate hết hạn
@@ -438,6 +611,6 @@ docker build -t ant-landing-test .
 5. ✅ Tạo ECR repository `ant-landing-prod`
 6. ✅ Tạo deploy script trên EC2 (port **4201**)
 7. ✅ Cài Nginx + SSL (Certbot)
-8. ✅ Trỏ DNS `ant.htezlife.com`
+8. ✅ Trỏ DNS `www.antjsc.vn`
 9. ✅ Setup GitHub Actions CI/CD
 10. ✅ Deploy lần đầu + verify
