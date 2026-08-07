@@ -13,6 +13,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class FooterComponent {
     currentYear = new Date().getFullYear();
+    androidAppUrl = 'https://play.google.com/store/apps/details?id=land.antjsc.com';
+    iosAppUrl = 'https://apps.apple.com/vn/app/ant-land/id6790647856';
     constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
     menuItems = [
         { 
