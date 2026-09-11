@@ -1,4 +1,6 @@
-# ant
+# ANT Tiko - Phần mềm Chấm công & HRM
+
+Nền tảng chấm công thông minh tích hợp quản lý nhân sự toàn diện cho doanh nghiệp.
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
 

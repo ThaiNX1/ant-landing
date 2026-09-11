@@ -1,5 +1,7 @@
 # Deploy ANT Landing (Frontend) lên EC2 - Hướng dẫn đầy đủ
 
+Landing page cho cả 2 sản phẩm: ANT Tiko (Chấm công & HRM) và ANT Land (BĐS)
+
 ## Tổng quan kiến trúc
 
 ```
@@ -324,7 +326,7 @@ curl -s http://localhost:4201/health
 | Service | Container Port | Host Port | Domain |
 |---------|---------------|-----------|--------|
 | ANT CMS | 80 | 4200 | cms-ant.htezlife.com |
-| ANT Landing | 80 | **4201** | antjsc.vn, antjsc.vn |
+| ANT Landing | 80 | **4201** | antjsc.vn, www.antjsc.vn |
 
 > Nếu cả 2 service chạy trên cùng 1 EC2, mỗi service map sang port khác nhau trên host.
 

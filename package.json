@@ -1,6 +1,7 @@
 {
-  "name": "ant",
-  "version": "0.0.0",
+  "name": "ant-landing",
+  "version": "2.0.0",
+  "description": "Landing page for ANT Tiko (Attendance & HRM) and ANT Land (Real Estate Sales)",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

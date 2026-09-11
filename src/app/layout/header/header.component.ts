@@ -31,8 +31,14 @@ export class HeaderComponent {
 
     menuItems = [
         { 
-            label: 'Giải pháp sale BĐS', 
+            label: 'Giải pháp chấm công', 
             route: '/home',
+            icon: '',
+            path: 'images/icons/menu_2.svg'
+        },
+        { 
+            label: 'Giải pháp BĐS', 
+            route: '/real-estate',
             icon: '',
             path: 'images/icons/menu_2.svg'
         },

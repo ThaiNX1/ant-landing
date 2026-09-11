@@ -13,13 +13,19 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class FooterComponent {
     currentYear = new Date().getFullYear();
-    androidAppUrl = 'https://play.google.com/store/apps/details?id=land.antjsc.com';
-    iosAppUrl = 'https://apps.apple.com/vn/app/ant-land/id6790647856';
+    androidAppUrl = 'https://play.google.com/store/apps/details?id=tiko.antjsc.com';
+    iosAppUrl = 'https://apps.apple.com/vn/app/ant-tiko/id6790647856';
     constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
     menuItems = [
         { 
-            label: 'Giải pháp sale BĐS', 
+            label: 'Giải pháp chấm công', 
             route: '/home',
+            icon: '',
+            path: 'images/icons/menu_2.svg'
+        },
+        { 
+            label: 'Giải pháp BĐS', 
+            route: '/real-estate',
             icon: '',
             path: 'images/icons/menu_2.svg'
         },

@@ -12,62 +12,74 @@ import { RouterLink } from '@angular/router';
 export class AboutComponent {
     features = [
         {
-            icon: 'pi-database',
-            title: 'Số hóa quỹ căn tập trung',
+            icon: 'pi-camera',
+            title: 'Chấm công đa dạng',
             description:
-                'Quản lý toàn bộ danh mục sản phẩm một cách khoa học, giúp sale tra cứu thông tin nhanh chóng, chính xác.',
+                'Hỗ trợ nhiều hình thức chấm công: nhận diện khuôn mặt, QR code, WiFi, GPS - phù hợp mọi môi trường làm việc.',
         },
         {
-            icon: 'pi-globe',
-            title: 'Web-page cá nhân hóa',
+            icon: 'pi-clock',
+            title: 'Quản lý ca làm việc',
             description:
-                'Mỗi nhân viên sale sở hữu đường link web riêng cho từng quỹ căn, hiển thị đầy đủ thông tin dự án và liên hệ cá nhân (Hotline, Zalo).',
+                'Thiết lập nhiều ca làm việc linh hoạt, nhiều điểm chấm công, phân ca tự động cho từng phòng ban.',
         },
         {
-            icon: 'pi-calendar',
-            title: 'Hệ thống đặt lịch thông minh',
+            icon: 'pi-file-edit',
+            title: 'Phê duyệt đơn từ',
             description:
-                'Khách hàng chủ động hẹn lịch xem nhà ngay trên trang web. Lịch hẹn được chuyển thẳng đến sale phụ trách, đảm bảo công bằng và chính xác.',
+                'Quản lý đơn nghỉ phép, tăng ca, công tác, đi muộn/về sớm - phê duyệt nhanh chóng trên mobile.',
         },
         {
-            icon: 'pi-chart-bar',
-            title: 'Quản trị đội nhóm',
+            icon: 'pi-wallet',
+            title: 'Bảng công & Lương',
             description:
-                'Trưởng nhóm có cái nhìn tổng thể về hiệu suất từng thành viên, theo dõi lượng tương tác và tỷ lệ chuyển đổi lịch hẹn thực tế.',
+                'Tự động tính toán bảng công, lương, phụ cấp, thưởng chính xác - xuất báo cáo chi tiết.',
+        },
+        {
+            icon: 'pi-building',
+            title: 'Quản lý tài sản',
+            description:
+                'Theo dõi tài sản công ty, thiết bị, phương tiện được giao cho nhân viên.',
+        },
+        {
+            icon: 'pi-tablet',
+            title: 'Tích hợp thiết bị IoT',
+            description:
+                'Kết nối máy chấm công vân tay, nhận diện khuôn mặt, cửa từ thông minh (phiên bản cao cấp).',
         },
     ];
 
     reasons = [
         {
-            icon: 'pi-star',
-            title: 'Chuyên nghiệp hóa hình ảnh',
+            icon: 'pi-bolt',
+            title: 'Dễ triển khai & Sử dụng',
             description:
-                'Thay vì gửi những tệp tin rời rạc, sale gửi cho khách một website chuyên nghiệp mang đậm dấu ấn cá nhân.',
+                'Giao diện đơn giản, trực quan — doanh nghiệp có thể triển khai và nhân viên làm quen ngay trong vài phút.',
         },
         {
             icon: 'pi-shield',
-            title: 'Công bằng & Minh bạch',
+            title: 'Chính xác & Minh bạch',
             description:
-                'Hệ thống tự động phân loại khách hàng dựa trên link cá nhân, loại bỏ hoàn toàn việc chồng chéo khách giữa các thành viên.',
+                'Dữ liệu chấm công chính xác, không gian lận - bảng công, lương minh bạch cho cả nhân viên và quản lý.',
         },
         {
-            icon: 'pi-wallet',
-            title: 'Tối ưu chi phí',
+            icon: 'pi-money-bill',
+            title: 'Tiết kiệm chi phí',
             description:
-                'Chỉ 49.000đ/tháng/người — giải pháp phù hợp nhất cho các đội nhóm nhỏ từ 5 - 20 người.',
+                'Giá cả hợp lý từ 29.000đ/người/tháng, thay thế máy chấm công truyền thống, giảm chi phí vận hành.',
         },
         {
-            icon: 'pi-thumbs-up',
-            title: 'Đơn giản & Dễ dùng',
+            icon: 'pi-mobile',
+            title: 'Linh hoạt đa nền tảng',
             description:
-                'Giao diện tinh gọn, không cần am hiểu kỹ thuật vẫn có thể sử dụng thành thạo sau 5 phút.',
+                'Sử dụng trên web, iOS, Android — làm việc từ xa, văn phòng, công trường đều thuận tiện.',
         },
     ];
 
     stats = [
-        { number: '49K', label: 'VNĐ/tháng/người' },
-        { number: '5 phút', label: 'Làm quen hệ thống' },
-        { number: '24/7', label: 'Hỗ trợ kỹ thuật' },
-        { number: '100%', label: 'Minh bạch dữ liệu' },
+        { number: '5,000+', label: 'Nhân viên sử dụng' },
+        { number: '100+', label: 'Doanh nghiệp tin dùng' },
+        { number: '50,000+', label: 'Lượt chấm công/ngày' },
+        { number: '99.9%', label: 'Uptime' },
     ];
 }

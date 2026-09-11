@@ -22,138 +22,138 @@ export class HomeComponent extends BaseClass {
     bp = inject(BreakpointService);
     layout = inject(LayoutComponent, { optional: true });
 
-    activeTab = signal('sale');
+    activeTab = signal('employee');
     activeTabIndex = signal(0);
     slideDirection = signal<'left' | 'right'>('right');
     isAnimating = signal(false);
 
     tabs = [
-        { key: 'sale', label: 'Dành cho Sale' },
-        { key: 'leader', label: 'Dành cho Quản lý' },
-        { key: 'investor', label: 'Dành cho Chủ đầu tư' },
+        { key: 'employee', label: 'Dành cho Nhân viên' },
+        { key: 'manager', label: 'Dành cho Quản lý' },
+        { key: 'business', label: 'Dành cho Doanh nghiệp' },
     ];
 
     tabDataMap: Record<string, TabData> = {
-        sale: {
+        employee: {
             highlights: [
-                'Sở hữu trang bán hàng cá nhân chuyên nghiệp',
-                'Khách hàng tự đặt lịch — không lo mất lead',
-                'Tra cứu quỹ căn nhanh chóng, chính xác',
+                'Chấm công dễ dàng bằng khuôn mặt, QR code, WiFi',
+                'Xem bảng công, lương trực tiếp trên app',
+                'Gửi đơn từ, phê duyệt nhanh chóng',
             ],
             features: [
                 {
-                    icon: 'pi-globe',
-                    title: 'Web-page cá nhân hóa',
+                    icon: 'pi-camera',
+                    title: 'Chấm công đa dạng',
                     description:
-                        'Mỗi sale có đường link riêng và liên hệ cá nhân cho từng sale.',
+                        'Chấm công bằng khuôn mặt, QR code, WiFi, GPS - linh hoạt mọi môi trường làm việc.',
                 },
                 {
-                    icon: 'pi-calendar',
-                    title: 'Đặt lịch thông minh',
+                    icon: 'pi-clock',
+                    title: 'Theo dõi công việc',
                     description:
-                        'Khách hàng chủ động hẹn lịch xem nhà ngay trên trang web của bạn.',
+                        'Xem lịch sử chấm công, thời gian làm việc và bảng công của tháng ngay trên điện thoại.',
                 },
                 {
-                    icon: 'pi-database',
-                    title: 'Quỹ căn số hóa',
+                    icon: 'pi-file-edit',
+                    title: 'Đơn từ điện tử',
                     description:
-                        'Toàn bộ danh mục sản phẩm được quản lý tập trung, tra cứu tức thì.',
+                        'Gửi đơn nghỉ phép, đi muộn, về sớm trực tiếp trên app, không cần giấy tờ.',
                 },
                 {
-                    icon: 'pi-share-alt',
-                    title: 'Chia sẻ dễ dàng',
+                    icon: 'pi-wallet',
+                    title: 'Tra cứu lương',
                     description:
-                        'Gửi link chuyên nghiệp qua Zalo, Facebook thay vì file rời rạc.',
+                        'Xem chi tiết bảng lương, phụ cấp, thưởng minh bạch và chính xác.',
                 },
             ],
         },
-        leader: {
+        manager: {
             highlights: [
-                'Theo dõi hiệu suất từng thành viên real-time',
-                'Minh bạch dữ liệu — không chồng chéo khách',
-                'Dashboard tổng quan trực quan, dễ hiểu',
+                'Quản lý chấm công toàn bộ nhân viên real-time',
+                'Phê duyệt đơn từ nhanh chóng trên mobile',
+                'Báo cáo công, lương tự động và chính xác',
             ],
             features: [
                 {
                     icon: 'pi-chart-bar',
-                    title: 'Dashboard quản trị',
+                    title: 'Dashboard quản lý',
                     description:
-                        'Cái nhìn tổng thể về lượng tương tác, lịch hẹn và tỷ lệ chuyển đổi của từng sale.',
+                        'Theo dõi tình trạng chấm công, đi muộn, về sớm của toàn bộ nhân viên real-time.',
+                },
+                {
+                    icon: 'pi-check-circle',
+                    title: 'Phê duyệt linh hoạt',
+                    description:
+                        'Phê duyệt đơn nghỉ phép, tăng ca, đi công tác ngay trên điện thoại, mọi lúc mọi nơi.',
                 },
                 {
                     icon: 'pi-users',
-                    title: 'Quản lý đội nhóm',
+                    title: 'Quản lý ca làm việc',
                     description:
-                        'Phân quyền, theo dõi và đánh giá hiệu suất từng thành viên dễ dàng.',
-                },
-                {
-                    icon: 'pi-shield',
-                    title: 'Phân loại khách tự động',
-                    description:
-                        'Hệ thống tự ghi nhận khách từ link cá nhân, loại bỏ tranh chấp.',
+                        'Thiết lập nhiều ca làm việc, phân ca linh hoạt cho từng phòng ban.',
                 },
                 {
                     icon: 'pi-file-export',
-                    title: 'Báo cáo xuất dữ liệu',
+                    title: 'Báo cáo tự động',
                     description:
-                        'Xuất báo cáo hiệu suất theo tuần/tháng phục vụ đánh giá KPI.',
+                        'Xuất báo cáo công, lương theo tuần/tháng, tự động tính toán chính xác.',
                 },
             ],
         },
-        investor: {
+        business: {
             highlights: [
-                'Số hóa toàn bộ quỹ căn dự án',
-                'Kiểm soát kênh phân phối hiệu quả',
-                'Nắm bắt dữ liệu thị trường real-time',
+                'Số hóa toàn bộ quy trình chấm công và HRM',
+                'Tích hợp lương, tài sản, bảo hiểm',
+                'Mở rộng với thiết bị IoT thông minh (phiên bản cao cấp)',
             ],
             features: [
                 {
                     icon: 'pi-building',
-                    title: 'Quản lý dự án',
+                    title: 'Quản lý tổ chức',
                     description:
-                        'Đăng tải và cập nhật thông tin dự án, quỹ căn trên hệ thống tập trung.',
+                        'Quản lý nhiều chi nhánh, phòng ban, điểm chấm công trên cùng một hệ thống.',
                 },
                 {
                     icon: 'pi-sitemap',
-                    title: 'Kênh phân phối',
+                    title: 'Tích hợp HRM toàn diện',
                     description:
-                        'Theo dõi hiệu quả từng đội nhóm sale đang phân phối sản phẩm.',
+                        'Quản lý nhân sự, lương, tài sản, bảo hiểm, hợp đồng tất cả trong một nền tảng.',
                 },
                 {
                     icon: 'pi-chart-line',
                     title: 'Phân tích dữ liệu',
                     description:
-                        'Thống kê lượt xem, lịch hẹn, tỷ lệ chuyển đổi theo từng dự án.',
+                        'Báo cáo chi tiết về năng suất, chi phí nhân sự, xu hướng chấm công.',
                 },
                 {
-                    icon: 'pi-verified',
-                    title: 'Thương hiệu chuyên nghiệp',
+                    icon: 'pi-tablet',
+                    title: 'Điều khiển thiết bị IoT',
                     description:
-                        'Mỗi dự án có landing page riêng, nâng tầm hình ảnh thương hiệu.',
+                        'Tích hợp máy chấm công vân tay, nhận diện khuôn mặt, cửa từ (phiên bản cao cấp).',
                 },
             ],
         },
     };
 
     proofStats = [
-        { number: '1,000+', label: 'Sale đang sử dụng' },
-        { number: '50+', label: 'Đội nhóm tin dùng' },
-        { number: '10,000+', label: 'Lịch hẹn được tạo' },
+        { number: '5,000+', label: 'Nhân viên đang sử dụng' },
+        { number: '100+', label: 'Doanh nghiệp tin dùng' },
+        { number: '50,000+', label: 'Lượt chấm công/ngày' },
         { number: '99.9%', label: 'Uptime hệ thống' },
     ];
 
     steps = [
         {
             title: 'Đăng ký tài khoản',
-            description: 'Tạo tài khoản cho đội nhóm chỉ trong 2 phút, không cần cài đặt phức tạp.',
+            description: 'Tạo tài khoản doanh nghiệp chỉ trong 2 phút, không cần cài đặt phức tạp.',
         },
         {
-            title: 'Thiết lập quỹ căn',
-            description: 'Đăng tải thông tin dự án, quỹ căn lên hệ thống và phân quyền cho từng sale.',
+            title: 'Thiết lập hệ thống',
+            description: 'Cấu hình ca làm việc, phòng ban, điểm chấm công và thêm nhân viên vào hệ thống.',
         },
         {
-            title: 'Chia sẻ & Chốt deal',
-            description: 'Sale chia sẻ link cá nhân, khách đặt lịch trực tiếp — bắt đầu chốt deal.',
+            title: 'Bắt đầu chấm công',
+            description: 'Nhân viên tải app và bắt đầu chấm công ngay - dễ dàng, nhanh chóng, chính xác.',
         },
     ];
 
